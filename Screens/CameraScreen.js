@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import React, { useState, useEffect, useRef } from "react";
+import { StyleSheet, Text, View, Button } from "react-native";
 import { Camera } from "expo-camera";
 
 export default function CameraScreen() {
   const [hasPermission, setHasPermission] = useState(null);
+  const cameraRef = useRef(null);
 
   useEffect(() => {
     (async () => {
@@ -20,7 +21,16 @@ export default function CameraScreen() {
   }
   return (
     <View style={styles.container}>
-      <Camera style={styles.camera} />
+      <Camera style={styles.camera} ref={cameraRef} />
+      <Button
+        title="Take a picture"
+        onPress={async () => {
+          if (cameraRef) {
+            const data = await cameraRef.current.takePictureAsync();
+            console.log("data", data);
+          }
+        }}
+      />
     </View>
   );
 }
