@@ -2,9 +2,11 @@ import React, { useEffect, useState } from "react";
 import { useIsFocused } from "@react-navigation/native";
 import { Image, FlatList, Button } from "react-native";
 import * as FileSystem from "expo-file-system";
+import axios from "axios";
 
 export default function ImagesScreen() {
   const [localImagesUrls, setLocalImagesUrls] = useState([]);
+  const [lastUpdate, setLastUpdate] = useState(0);
   const isFocused = useIsFocused();
   useEffect(() => {
     (async () => {
@@ -14,7 +16,7 @@ export default function ImagesScreen() {
       setLocalImagesUrls(files);
       console.log("updated the files list");
     })();
-  }, [isFocused]);
+  }, [isFocused, lastUpdate]);
 
   return (
     <>
@@ -38,7 +40,37 @@ export default function ImagesScreen() {
                   padding: 50,
                 }}
               />
-              <Button title="Upload" />
+              <Button
+                title="Upload"
+                onPress={() => {
+                  const data = new FormData();
+                  data.append("name", "avatar");
+                  data.append("fileData", {
+                    uri:
+                      FileSystem.cacheDirectory +
+                      "ImageManipulator/" +
+                      item.item,
+                    name: item.item,
+                  });
+                  axios({
+                    method: "post",
+                    url: "http://192.168.0.34:3000/upload",
+                    data,
+                    headers: { "Content-Type": "multipart/form-data" },
+                  })
+                    .then(function (response) {
+                      //handle success
+                      if (response.status === 200) {
+                        alert("uploaded");
+                      }
+                    })
+                    .catch(function (response) {
+                      //handle error
+                      console.log(response);
+                      alert("error");
+                    });
+                }}
+              />
               <Button
                 title="Delete"
                 color="red"
@@ -46,6 +78,7 @@ export default function ImagesScreen() {
                   await FileSystem.deleteAsync(
                     FileSystem.cacheDirectory + "ImageManipulator/" + item.item
                   );
+                  setLastUpdate(lastUpdate + 1);
                   alert("Deleted");
                 }}
               />
