@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { StyleSheet, Text, View, Button } from "react-native";
 import { Camera } from "expo-camera";
+import * as FileSystem from "expo-file-system";
 
 export default function CameraScreen() {
   const [hasPermission, setHasPermission] = useState(null);
@@ -28,6 +29,10 @@ export default function CameraScreen() {
           if (cameraRef) {
             const data = await cameraRef.current.takePictureAsync();
             console.log("data", data);
+            FileSystem.copyAsync({
+              from: data.uri,
+              to: FileSystem.documentDirectory,
+            });
           }
         }}
       />
