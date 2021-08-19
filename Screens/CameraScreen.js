@@ -27,12 +27,10 @@ export default function CameraScreen() {
         title="Take a picture"
         onPress={async () => {
           if (cameraRef) {
-            const data = await cameraRef.current.takePictureAsync();
-            console.log("data", data);
-            FileSystem.copyAsync({
-              from: data.uri,
-              to: FileSystem.documentDirectory,
+            const photoData = await cameraRef.current.takePictureAsync({
+              quality: 0,
             });
+            console.log("photo data", photoData);
           }
         }}
       />
