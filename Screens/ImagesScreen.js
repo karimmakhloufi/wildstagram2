@@ -54,7 +54,7 @@ export default function ImagesScreen() {
                   });
                   axios({
                     method: "post",
-                    url: "http://192.168.0.34:3000/upload",
+                    url: "https://wildstagram.nausicaa.wilders.dev/upload",
                     data,
                     headers: { "Content-Type": "multipart/form-data" },
                   })

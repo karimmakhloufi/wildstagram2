@@ -8,7 +8,9 @@ export default function FeedScreen() {
   const isFocused = useIsFocused();
   useEffect(() => {
     (async () => {
-      const filesUrl = await axios.get("http://192.168.0.34:3000/list");
+      const filesUrl = await axios.get(
+        "https://wildstagram.nausicaa.wilders.dev/list"
+      );
       console.log("filesurls", filesUrl.data);
       setServerImagesUrls(filesUrl.data);
     })();
@@ -23,7 +25,8 @@ export default function FeedScreen() {
           <>
             <Image
               source={{
-                uri: "http://192.168.0.34:3000/files/" + item.item,
+                uri:
+                  "https://wildstagram.nausicaa.wilders.dev/files/" + item.item,
               }}
               key={item}
               style={{
@@ -31,6 +34,7 @@ export default function FeedScreen() {
                 resizeMode: "cover",
                 height: 400,
                 padding: 50,
+                marginBottom: 20,
               }}
             />
           </>
