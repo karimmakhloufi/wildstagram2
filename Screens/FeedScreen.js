@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Image, ScrollView } from "react-native";
+import { Image, FlatList, StyleSheet } from "react-native";
 
 export default function FeedScreen() {
   const [serverImagesUrls, setServerImagesUrls] = useState([]);
@@ -13,22 +13,32 @@ export default function FeedScreen() {
       setServerImagesUrls(filesUrl.data);
     })();
   }, []);
-  return (
-    <ScrollView>
-      {serverImagesUrls.map((el) => (
-        <React.Fragment key={el}>
-          <Image
-            style={{
-              flex: 1,
-              resizeMode: "contain",
-              height: 500,
-            }}
-            source={{
-              uri: "https://wildstagram.nausicaa.wilders.dev/files/" + el,
-            }}
-          />
-        </React.Fragment>
-      ))}
-    </ScrollView>
-  );
+  return serverImagesUrls.length > 0 ? (
+    <FlatList
+      data={serverImagesUrls}
+      keyExtractor={(serverImageURI) => serverImageURI}
+      renderItem={(itemData) => {
+        console.log("item", itemData);
+        return (
+          <>
+            <Image
+              style={styles.image}
+              source={{
+                uri:
+                  "https://wildstagram.nausicaa.wilders.dev/files/" +
+                  itemData.item,
+              }}
+            />
+          </>
+        );
+      }}
+    />
+  ) : null;
 }
+
+const styles = StyleSheet.create({
+  image: {
+    resizeMode: "contain",
+    height: 500,
+  },
+});
