@@ -39,6 +39,7 @@ export default function ImagesScreen() {
                     FileSystem.cacheDirectory +
                     "ImageManipulator/" +
                     itemData.item,
+                  type: "image/jpeg",
                   name: itemData.item,
                 });
                 let serverResponse;
