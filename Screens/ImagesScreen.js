@@ -7,7 +7,7 @@ export default function ImagesScreen() {
   const [imagesURI, setImagesURI] = useState([]);
   useEffect(() => {
     (async () => {
-      images = await FileSystem.readDirectoryAsync(
+      const images = await FileSystem.readDirectoryAsync(
         FileSystem.cacheDirectory + "ImageManipulator"
       );
       setImagesURI(images);

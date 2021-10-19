@@ -27,6 +27,7 @@ export default function App() {
           },
           tabBarActiveTintColor: "blue",
           tabBarInactiveTintColor: "gray",
+          unmountOnBlur: true,
         })}
       >
         <Tab.Screen name="Camera" component={CameraScreen} />
